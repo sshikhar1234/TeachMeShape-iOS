@@ -16,8 +16,9 @@ class ViewController: UIViewController {
     var username:String = "sshikharshah@gmail.com"
     var password:String = "Particle_2022"
     var DEVICE_ID:String = "3e0031001447363333343437"
-
+    var  score: Int = 0
     var flag: String = ""
+    @IBOutlet weak var scorelabel: UILabel!
     @IBOutlet weak var imageview: UIImageView!
     @IBOutlet weak var labelLog: UILabel!
     var randomInt:Int = 0
@@ -27,6 +28,8 @@ class ViewController: UIViewController {
         loginInParticle()
         getDeviceFromCloud()
         showRandomShape()
+        self.scorelabel.text = "Score: \(self.score)"
+
         // Do any additional setup after loading the view.
     }
     @IBAction func tryAnotherShape(_ sender: Any) {
@@ -35,6 +38,9 @@ class ViewController: UIViewController {
     }
     
     func showRandomShape(){
+        
+        labelLog.text = "How many sides does this shape have?"
+        
         var images = ["square","triangle"]
          self.randomInt = Int.random(in: 0..<2)
         print("Random Value: \(randomInt)")
@@ -55,7 +61,6 @@ class ViewController: UIViewController {
         }
     }
     func getDeviceFromCloud() {
-        labelLog.text = "How many sides does this shape have?"
         ParticleCloud.sharedInstance().getDevice(self.DEVICE_ID) { (device:ParticleDevice?, error:Error?) in
             
             if (error != nil) {
@@ -74,6 +79,7 @@ class ViewController: UIViewController {
     }
     
     func subscribeToParticleEvents() {
+        var parameters = [""]
         var handler : Any?
         handler = ParticleCloud.sharedInstance().subscribeToDeviceEvents(
             withPrefix: "playerChoice",
@@ -87,13 +93,20 @@ class ViewController: UIViewController {
                     print("got event with data \(event?.data)!")
                     let choice = (event?.data)!
                     if  choice == "3" {
+                        
                         if self.randomInt == 1 {
+                            parameters = ["CORRECT"]
+                            self.score = self.score + 1
+
                             DispatchQueue.main.async {
                                 self.labelLog.text = "CORRECT!"
+                                self.scorelabel.text = "Score: \(self.score)"
                             }
                             self.flag = "CORRECT!"
                         }
                         else{
+                            parameters = ["INCORRECT"]
+
                         DispatchQueue.main.async {
                             self.labelLog.text = "INCCORRECT!"
                         }
@@ -101,20 +114,36 @@ class ViewController: UIViewController {
                     }
                     else if choice == "4" {
                         if self.randomInt == 0 {
+                            parameters = ["CORRECT"]
                             print("CORRECT!")
                             self.flag = "CORRECT!"
+                            self.score = self.score + 1
                             DispatchQueue.main.async {
                                 self.labelLog.text = "CORRECT!"
+                                self.scorelabel.text = "Score: \(self.score)"
+                                
                             }
                         }
                         else{
+                            parameters = ["INCORRECT"]
+
                             print("INCORRECT!")
                             self.flag = "INCORRECT!"
                             DispatchQueue.main.async {
+                                
                                      self.labelLog.text = "INCCORRECT!"
                             }
                         }
-//                        self.turnParticleRed()
+                    }
+                    var call = self.myPhoton!.callFunction("showHour", withArguments: parameters) {
+                        
+                        (resultCode : NSNumber?, error : Error?) -> Void in
+                        if (error == nil) {
+                            print("Sent message to Particle ")
+                        }
+                        else {
+                            print("Error when telling Particle")
+                        }
                     }
                 }
         })

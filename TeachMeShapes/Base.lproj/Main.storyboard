@@ -37,6 +37,13 @@
                                     <action selector="tryAnotherShape:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fpW-zD-hgW"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Score: " textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Tuy-ax-g74">
+                                <rect key="frame" x="43" y="471" width="334" height="21"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <nil key="textColor"/>
+                                <nil key="highlightedColor"/>
+                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
@@ -44,6 +51,7 @@
                     <connections>
                         <outlet property="imageview" destination="FhU-lt-b3e" id="eg8-qL-3UI"/>
                         <outlet property="labelLog" destination="zdp-2s-npi" id="dms-TJ-rpF"/>
+                        <outlet property="scorelabel" destination="Tuy-ax-g74" id="4sP-g6-fvs"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
